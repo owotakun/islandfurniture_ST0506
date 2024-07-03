@@ -1,0 +1,156 @@
+<script src="../checkCountry.js"></script>
+<style>
+    .furniture-name {
+        color: #404751;
+        letter-spacing: -1px;
+        font-weight: 600;
+        font-size: 1.4em;
+        line-height: 1.1em;
+        margin: 0;
+        padding: 0;
+    }
+    .heart-icon {
+        font-size: 30px;
+        color: red;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    #product-thumb-info-act-left {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form-group {
+        margin-left: 4%;
+    }
+</style>
+<html>
+    <script src="../../header.js"></script>
+    <body>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                renderFavorites();
+            });
+
+            function renderFavorites() {
+                var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+                // Sort favorites array by default (ascending by name)
+                favorites.sort((a, b) => a.name.localeCompare(b.name));
+
+                displayFavorites(favorites);
+            }
+
+            function displayFavorites(favorites) {
+                var htmlTxt = '';
+
+                if (favorites.length === 0) {
+                    htmlTxt = '<li>No favorite items yet.</li><li>Start adding products to your favourites to see them here.</li>';
+                } else {
+                    favorites.forEach(furniture => {
+                        var detailPage = getDetailPage(furniture.sku);
+
+                        htmlTxt += `
+                            <li class="col-md-3 col-sm-6 col-xs-12 product" style="padding:20px">
+                                <span class="product-thumb-info">
+                                    <span class="product-thumb-info-image">
+                                        <span class="product-thumb-info-act">
+                                            <span class="product-thumb-info-act-left">
+                                                <a href="${detailPage}?sku=${furniture.sku}" style="color: white"><em>View Details</em></a>
+                                            </span>
+                                        </span>
+                                        <img alt="" class="img-responsive" src="${furniture.imageURL}">
+                                    </span>
+                                    <span class="product-thumb-info-content">
+                                        <span class="product-thumb-info-act-left" id="product-thumb-info-act-left">
+                                            <h4 class="furniture-name">${furniture.name}</h4>
+                                            <i class="heart-icon fa fa-heart" onclick="toggleHeart(this, '${furniture.sku}')"></i>
+                                        </span>
+                                        <span class="product-thumb-info-act-left">
+                                            <em>Price: $${furniture.price}.00</em>
+                                        </span><br/>
+                                        <form action="${detailPage}" method="GET">
+                                            <input type="hidden" name="sku" value="${furniture.sku}"/>
+                                            <input type="submit" class="btn btn-primary btn-block" value="More Details"/>
+                                        </form>
+                                    </span>
+                                </span>
+                            </li>`;
+                    });
+                }
+
+                document.getElementById("retailProductsDisplay").innerHTML = htmlTxt;
+            }
+
+            function getDetailPage(sku) {
+                if (sku.startsWith('F')) {
+                    return 'furnitureProductDetails.html';
+                } else {
+                    return 'retailProductDetails.html';
+                }
+            }
+
+            function toggleHeart(element, sku) {
+                var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                favorites = favorites.filter(item => item.sku !== sku);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+
+                // Remove the parent <li> element of the heart icon
+                element.closest('.product').remove();
+
+                // If all favorites are removed, show the no favorites message
+                if (favorites.length === 0) {
+                    document.getElementById("retailProductsDisplay").innerHTML = '<li>No favorite items yet.</li>';
+                }
+            }
+
+            function sortFavorites() {
+                var favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                var sortOption = document.getElementById("sortDropdown").value;
+
+                if (sortOption === 'asc') {
+                    favorites.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sortOption === 'desc') {
+                    favorites.sort((a, b) => b.name.localeCompare(a.name));
+                }
+
+                displayFavorites(favorites);
+            }   
+        </script>
+        <div class="body">
+            <script src="menu2.js"></script>
+            <div class="body">
+                <div role="main" class="main">
+                    <section class="page-top">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2>Favorites</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="sortDropdown">Sort by:</label>
+                                    <select class="form-control" id="sortDropdown" onchange="sortFavorites()">
+                                        <option value="asc">Name (A-Z)</option>
+                                        <option value="desc">Name (Z-A)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <ul id="retailProductsDisplay" class="products product-thumb-info-list" style="list-style-type: none; margin-left: -3%;" data-plugin-masonry></ul>
+                        </div>
+                        <hr class="tall">
+                    </div>
+                </div>
+            </div>
+            <script src="../footer.js"></script>
+        </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </body>
+</html>

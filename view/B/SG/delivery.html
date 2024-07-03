@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Services</title>
+    <script src="../checkCountry.js"></script>
+    <script src="../../header.js"></script>
+    <style>
+        .info-text {
+            font-size: 0.9em;
+            color: black;
+        }
+        .info-text p, .info-text ul {
+            color: black;
+            font-size: 1.5em;
+        }
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 5% 10%;
+        }
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            width: 30%;
+            box-sizing: border-box;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var countryPrefix = localStorage.getItem('urlPrefix');
+        var currentUrl = new URL(window.location.href);
+        var cat = currentUrl.searchParams.get("cat");
+        var countryId = localStorage.getItem('countryId');
+    </script>
+    <div class="body">
+        <script src="menu2.js"></script>
+        <div role="main" class="main">
+            <section class="page-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Delivery</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 info-text">
+                            <p>Delivery services are designed to transport goods from one location to another efficiently and securely. Whether you're sending a package across town or across the country, our delivery options ensure your items arrive on time and in perfect condition.</p>
+                            <p>Benefits of using our delivery services include:</p>
+                            <ul>
+                                <li>Convenience: Easily send and receive packages without leaving your home.</li>
+                                <li>Speed: Choose from various delivery speeds to meet your needs.</li>
+                                <li>Reliability: Trust our experienced team to handle your items with care.</li>
+                                <li>Tracking: Monitor your package's progress with real-time tracking updates.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Fast Delivery</h3>
+                        <p>Speedy delivery within 24 hours</p>
+                        <p>Available options: Courier, Drone Delivery</p>
+                    </div>
+                    <div class="card">
+                        <h3>Standard Delivery</h3>
+                        <p>Reliable delivery within 3-5 business days</p>
+                        <p>Available options: Postal Service, Courier</p>
+                    </div>
+                    <div class="card">
+                        <h3>Economy Delivery</h3>
+                        <p>Cost-effective delivery within 7-10 business days</p>
+                        <p>Available options: Postal Service, Freight</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script src="../footer.js"></script>
+    </div>
+</body>
+</html>
